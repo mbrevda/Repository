@@ -7,20 +7,22 @@ include __DIR__ . '/UserSpec.php';
 use \Mbrevda\Repository\Repository;
 use \Mbrevda\Repository\SqlDriver;
 use \Mbrevda\Specification\Operators\Factory as oFactory;
+use \Mbrevda\Specification\Extractors\Property;
+use \Mbrevda\Specification\Operators\Equals;
 use \Mbrevda\Specification\Extractors\Factory as eFactory;
 use \Mbrevda\Specification\Connectives\Factory as cFactory;
 use \Mbrevda\Repository\Operators\AndX;
 
-$firstName      = (new eFactory)->property('firstName');
-$lastName       = (new eFactory)->property('lastName');
-$extractActive  = (new eFactory)->property('active');
+$firstName      = new Property('firstName');
+$lastName       = new Property('lastName');
+$extractActive  = new Property('active');
 $repo           = new Repository(new SqlDriver);
 
-$firstNameIsCharlie = (new oFactory)->equals('Charlie', $firstName);
-$firstNameIsJack    = (new oFactory)->equals('Jack', $firstName);
-$lastNameIsBrown    = (new oFactory)->equals('Brown', $lastName);
-$lastNameIsBlack    = (new oFactory)->equals('Black', $lastName);
-$isActive           = (new oFactory)->equals('true', $extractActive);
+$firstNameIsCharlie = new Equals('Charlie', $firstName);
+$firstNameIsJack    = new Equals('Jack', $firstName);
+$lastNameIsBrown    = new Equals('Brown', $lastName);
+$lastNameIsBlack    = new Equals('Black', $lastName);
+$isActive           = new Equals('true', $extractActive);
 
 $driver             = new SqlDriver;
 $userSpec           = $driver->userSpec();
