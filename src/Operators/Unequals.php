@@ -2,15 +2,13 @@
 
 namespace Mbrevda\Repository\Operators;
 
-class Unequals
+use Mbrevda\Repository\SqlDriver;
+
+class Unequals extends SqlDriver
 {
-    public function __construct($query)
-    {
-        $this->query = $query;
-    }
 
     public function __invoke($a, $b)
     {
-        $this->query->where($a ' <> ?', $b);
+        return $a . ' <> ' . $b;
     }
 }

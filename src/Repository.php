@@ -13,9 +13,7 @@ class Repository
 
     public function selectSatisfying($spec)
     {
-        $q = $spec->selectSatisfying($this->driver);
-
-        return $q;
+        return $spec->selectSatisfying($this->driver);
     }
 
 }

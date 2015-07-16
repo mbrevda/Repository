@@ -2,15 +2,24 @@
 
 namespace Mbrevda\Repository\Operators;
 
-class Equals
+use Mbrevda\Repository\SqlDriver;
+
+class Equals extends SqlDriver
 {
-    public function __construct($query)
+    public function __construct($driver, $field, $value)
     {
-        $this->query = $query;
+        $this->driver = $driver;
+        $this->field = $field;
+        $this->value = $value;
     }
 
-    public function __invoke($field, $value)
+    public function selectSatisfying()
     {
-        $this->query->where($field . ' = ?', $value);
+        return $this->driver->withWhere($this->__toString());
+    }
+
+    public function __toString()
+    {
+        return $this->field . ' = ' . $this->value;
     }
 }
