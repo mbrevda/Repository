@@ -2,36 +2,32 @@
 
 include __DIR__ . '/../vendor/autoload.php';
 include __DIR__ . '/../../specification/vendor/autoload.php';
+include __DIR__ . '/../../QueryBuilder/vendor/autoload.php';
 include __DIR__ . '/UserSpec.php';
 
 use \Mbrevda\Repository\Repository;
-use \Mbrevda\Repository\SqlDriver;
-use \Mbrevda\Specification\Operators\Factory as oFactory;
 use \Mbrevda\Specification\Extractors\Property;
 use \Mbrevda\Specification\Operators\Equals;
-use \Mbrevda\Specification\Extractors\Factory as eFactory;
-use \Mbrevda\Specification\Connectives\Factory as cFactory;
-use \Mbrevda\Repository\Operators\AndX;
+use \Mbrevda\Specification\Connectives\AndX;
+use \Mbrevda\Specification\Connectives\OrX;
 
-$firstName      = new Property('firstName');
-$lastName       = new Property('lastName');
-$extractActive  = new Property('active');
-$repo           = new Repository(new SqlDriver);
-
-$firstNameIsCharlie = new Equals('Charlie', $firstName);
-$firstNameIsJack    = new Equals('Jack', $firstName);
-$lastNameIsBrown    = new Equals('Brown', $lastName);
-$lastNameIsBlack    = new Equals('Black', $lastName);
-$isActive           = new Equals('true', $extractActive);
-
-$driver             = new SqlDriver;
-$userSpec           = $driver->userSpec();
+$repo               = new Repository;
+$userSpec           = new UserSpec();
 
 $spec = $userSpec
-    ->andX($firstNameIsCharlie, $lastNameIsBrown)
-    ->orX($driver->andX($firstNameIsJack, $lastNameIsBlack))
-    ->andX($isActive);
+    ->andX(new Equals('true', new Property('active')),
+        new OrX(
+            new AndX(
+                new Equals('Charlie', new Property('firstName')),
+                new Equals('Brown', new Property('lastName'))
+            ),
+            new AndX(
+                new Equals('Jack', new Property('firstName')),
+                new Equals('Black', new Property('lastName'))
+            )
+        )
+    );
+//print_r($spec);
+echo $repo->userSpec($spec) . PHP_EOL;
 
-$q = $repo->selectSatisfying($spec);
-
-echo $q->toString() . PHP_EOL;
+//echo $spec . PHP_EOL;

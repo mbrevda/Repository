@@ -2,18 +2,31 @@
 
 namespace Mbrevda\Repository;
 
+use \Mbrevda\QueryBuilder\Builder;
+use \Mbrevda\Repository\UserSpec;
+use \Aura\SqlQuery\QueryFactory;
+
 class Repository
 {
-    private $driver;
-
-    public function __construct($driver)
+    public function __construct()
     {
-        $this->driver = $driver;
+
+        $query_factory = new QueryFactory('mysql');
+        $this->sqlquery =  $query_factory->newSelect();
+        $this->builder = new Builder($this->sqlquery);
     }
 
     public function selectSatisfying($spec)
     {
-        return $spec->selectSatisfying($this->driver);
+        return $this->builder->build($spec->selectSatisfying($this));
+    }
+
+    public function userSpec($spec)
+    {
+        $userQuery = new UserSpec($this->sqlquery);
+        $q = $userQuery->selectSatisfying($spec);
+        
+        return $q->getStatement();
     }
 
 }
