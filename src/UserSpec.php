@@ -2,9 +2,9 @@
 
 namespace Mbrevda\Repository;
 
-use Mbrevda\QueryBuilder\Query;
+use Mbrevda\QueryBuilder\CompositeQuery;
 
-class UserSpec extends Query
+class UserSpec extends CompositeQuery
 {
     public function __construct($sqlquery)
     {
