@@ -2,7 +2,7 @@
 
 namespace Mbrevda\Repository;
 
-use \Mbrevda\QueryBuilder\Builder;
+use \Mbrevda\QueryBuilder\CompositeQuery;
 use \Mbrevda\Repository\UserSpec;
 use \Aura\SqlQuery\QueryFactory;
 
@@ -10,23 +10,25 @@ class Repository
 {
     public function __construct()
     {
-
         $query_factory = new QueryFactory('mysql');
         $this->sqlquery =  $query_factory->newSelect();
-        $this->builder = new Builder($this->sqlquery);
     }
 
     public function selectSatisfying($spec)
     {
-        return $this->builder->build($spec->selectSatisfying($this));
-    }
+        $q = $spec->selectSatisfying(new CompositeQuery);
+        //print_r($q);
+        $where = $q->asSql($this->sqlquery);
 
-    public function userSpec($spec)
-    {
-        $userQuery = new UserSpec($this->sqlquery);
-        $q = $userQuery->selectSatisfying($spec);
-        
-        return $q->getStatement();
+        if ($where) {
+            /*if (substr($where, 1, 1) == '(' && substr($where, -1) == ')') {
+                $where = substr($where, 1, -1);
+            }*/
+
+            $this->sqlquery->where($where);
+        }
+
+        return $this->sqlquery->getStatement();
     }
 
 }

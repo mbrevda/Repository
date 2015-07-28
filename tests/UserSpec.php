@@ -1,6 +1,7 @@
 <?php
 
 use \Mbrevda\Specification\Connectives\CompositeSpecification;
+use Mbrevda\Repository\UserSpec as UserSpecQuery;
 
 class UserSpec extends CompositeSpecification
 {
@@ -12,6 +13,6 @@ class UserSpec extends CompositeSpecification
 
     public function selectSatisfying($ob)
     {
-        return $ob;
+        return new UserSpecQuery;
     }
 }

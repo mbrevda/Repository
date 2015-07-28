@@ -15,19 +15,21 @@ $repo               = new Repository;
 $userSpec           = new UserSpec();
 
 $spec = $userSpec
-    ->andX(new Equals('true', new Property('active')),
-        new OrX(
-            new AndX(
-                new Equals('Charlie', new Property('firstName')),
-                new Equals('Brown', new Property('lastName'))
-            ),
-            new AndX(
-                new Equals('Jack', new Property('firstName')),
-                new Equals('Black', new Property('lastName'))
-            )
+    ->andX(new Equals('true', new Property('active')))
+    ->andX(new Equals('true', new Property('member')))
+    ->andX(
+        new AndX(
+            new Equals('Charlie', new Property('firstName')),
+            new Equals('Brown', new Property('lastName'))
+        )
+    )
+    ->orX(
+        new AndX(
+            new Equals('Charlie', new Property('firstName')),
+            new Equals('Brown', new Property('lastName'))
         )
     );
 //print_r($spec);
-echo $repo->userSpec($spec) . PHP_EOL;
+echo $repo->selectSatisfying($spec) . PHP_EOL;
 
 //echo $spec . PHP_EOL;
