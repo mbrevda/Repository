@@ -23,12 +23,12 @@ $spec = $userSpec
             new Equals('Black', new Property('lastName'))
         )
     )
-    /*->orX(
+    ->orX(
         new AndX(
             new Equals('Charlie', new Property('firstName')),
             new Equals('Brown', new Property('lastName'))
         )
-    )*/;
+    );
 //print_r($spec);
 echo $repo->selectSatisfying($spec) . PHP_EOL;
 
