@@ -19,12 +19,8 @@ class Repository
         $q = $spec->selectSatisfying(new CompositeQuery);
         //print_r($q);
         $where = $q->asSql($this->sqlquery);
-
+        //print_r($where);
         if ($where) {
-            /*if (substr($where, 1, 1) == '(' && substr($where, -1) == ')') {
-                $where = substr($where, 1, -1);
-            }*/
-
             $this->sqlquery->where($where);
         }
 

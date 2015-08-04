@@ -6,6 +6,7 @@ use Mbrevda\QueryBuilder\CompositeQuery;
 
 class UserSpec extends CompositeQuery
 {
+    public $isTop = true;
     public function asSql($query)
     {
         $query
@@ -15,5 +16,8 @@ class UserSpec extends CompositeQuery
                 'lastName',
                 'id'
             ]);
+
+        parent::asSql($query);
     }
+    
 }

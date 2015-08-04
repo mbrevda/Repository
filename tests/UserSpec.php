@@ -13,6 +13,6 @@ class UserSpec extends CompositeSpecification
 
     public function selectSatisfying($ob)
     {
-        return new UserSpecQuery;
+        return parent::selectSatisfying(new UserSpecQuery);
     }
 }
